@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(AudioPoolDbContext))]
-    [Migration("20230905170008_InitialCreate")]
+    [Migration("20230905230105_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -72,7 +72,6 @@ namespace API.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedBy")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -113,7 +112,6 @@ namespace API.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedBy")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -139,7 +137,6 @@ namespace API.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedBy")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -171,7 +168,6 @@ namespace API.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedBy")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")

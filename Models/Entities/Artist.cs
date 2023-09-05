@@ -22,7 +22,7 @@ public class Artist
 
     public DateTime? DateModified { get; set; }
 
-    public string ModifiedBy { get; set; }
+    public string? ModifiedBy { get; set; }
 
     // Navigation Properties
     public ICollection<Album> Albums { get; set; }

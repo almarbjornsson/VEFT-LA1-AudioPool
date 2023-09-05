@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Models.Entities;
 public class Genre
 {
+    
     public int Id { get; set; }
 
     [Required]
@@ -15,7 +16,7 @@ public class Genre
 
     public DateTime? DateModified { get; set; }
 
-    public string ModifiedBy { get; set; }
+    public string? ModifiedBy { get; set; }
 
     // Navigation Properties
     public ICollection<Artist> Artists { get; set; }
