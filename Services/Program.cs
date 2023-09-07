@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using API.Repositories;
+using Repositories;
+
 
 var builder = WebApplication.CreateBuilder(args);
 

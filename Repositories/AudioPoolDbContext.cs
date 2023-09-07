@@ -1,8 +1,10 @@
 
 using Microsoft.EntityFrameworkCore;
-using Models.Entities;  
 
-namespace API.Repositories
+using Models.Entities;
+
+namespace Repositories
+
 {
     public class AudioPoolDbContext : DbContext
     {
