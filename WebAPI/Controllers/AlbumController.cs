@@ -38,6 +38,15 @@ public class AlbumController : ControllerBase
         album.Links.AddReference("delete", $"/api/albums/{id}");
         // Artists
         album.Links.AddListReference("artists", album.Artists.Select(a => $"/api/artists/{a.Id}"));
+        
+        
+        // Add hypermedia links to each song in the album
+        album.Songs = album.Songs.Select(s =>
+        {
+            // Self
+            s.Links.AddReference("self", $"/api/songs/{s.Id}");
+            return s;
+        });
         return Ok(album);
     }
 
