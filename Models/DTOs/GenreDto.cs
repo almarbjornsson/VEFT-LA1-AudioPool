@@ -1,4 +1,4 @@
-namespace Models;
+namespace Models.DTOs;
 public class GenreDto
 {
     public int Id { get; set; }

@@ -15,37 +15,25 @@ public class AlbumController : ControllerBase
         _audioPoolService = audioPoolService;
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetAllAlbums()
-    {
-        return Ok(await _audioPoolService.GetAllAlbumsAsync());
-    }
-
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAlbumById(int id)
     {
-        return Ok(await _audioPoolService.GetAlbumByIdAsync(id));
+        // Try getting the album
+        var album = await _audioPoolService.GetAlbumByIdAsync(id);
+        // If the album is null, return a 404
+        if (album == null)
+        {
+            return NotFound();
+        }
+        // Otherwise, return the album
+        return Ok(album);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> AddAlbum([FromBody] Album album)
+    [HttpGet("{id}/songs")]
+    public async Task<IActionResult> GetSongsInAlbum(int id)
     {
-        await _audioPoolService.AddAlbumAsync(album);
-        return CreatedAtAction(nameof(GetAlbumById), new { id = album.Id }, album);
+        return Ok(await _audioPoolService.GetSongsByAlbumId(id));
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAlbum(int id, [FromBody] Album album)
-    {
-        if (id != album.Id) return BadRequest("ID mismatch.");
-        await _audioPoolService.UpdateAlbumAsync(album);
-        return NoContent();
-    }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteAlbum(int id)
-    {
-        await _audioPoolService.DeleteAlbumAsync(id);
-        return NoContent();
-    }
 }
