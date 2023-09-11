@@ -16,8 +16,7 @@ public class Genre
 
     public DateTime? DateModified { get; set; }
 
-    public string? ModifiedBy { get; set; }
+    public string? ModifiedBy { get; set; } = "AudioPoolAdmin";
 
-    // Navigation Properties
-    public ICollection<Artist> Artists { get; set; }
+    public ICollection<ArtistGenre> Artists { get; set; }
 }

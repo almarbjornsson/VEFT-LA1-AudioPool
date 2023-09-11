@@ -44,10 +44,11 @@ public class AudioPoolRepository : IAudioPoolRepository
             Name = album.Name,
             ReleaseDate = album.ReleaseDate,
             CoverImageUrl = album.CoverImageUrl,
-            Artists = album.Artists?.Select(a => MapArtistToDto(a)) ?? Enumerable.Empty<ArtistDto>(),
+            Artists = album.AlbumArtists?.Select(a => MapArtistToDto(a.Artist)) ?? Enumerable.Empty<ArtistDto>(),
             Songs = album.Songs?.Select(s => MapSongToDto(s)) ?? Enumerable.Empty<SongDto>(),
         };
     }
+
     
     
     
@@ -59,8 +60,12 @@ public class AudioPoolRepository : IAudioPoolRepository
 
     public async Task<AlbumDetailsDto?> GetAlbumByIdAsync(int id)
     {
-        var album = await _context.Albums.FindAsync(id);
-        
+        var album = await _context.Albums
+            .Include(a => a.AlbumArtists)
+            .ThenInclude(aa => aa.Artist) // Eagerly load Artist data
+            .Include(s => s.Songs) // Join Songs
+            .FirstOrDefaultAsync(a => a.Id == id);
+         
         if (album == null)
         {
             return null;
@@ -69,6 +74,18 @@ public class AudioPoolRepository : IAudioPoolRepository
         var albumDto = MapAlbumToDto(album);
         return albumDto;
     }
+
+    public async Task DeleteAlbumByIdAsync(int id)
+    {
+        var album = await _context.Albums.FindAsync(id);
+        if (album == null)
+        {
+            throw new ArgumentException($"Album with id {id} does not exist");
+        }
+        _context.Albums.Remove(album);
+        await _context.SaveChangesAsync();
+    }
+
 
     public async Task<IEnumerable<SongDto>> GetSongsByAlbumId(int id)
     {

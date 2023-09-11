@@ -22,9 +22,10 @@ public class Artist
 
     public DateTime? DateModified { get; set; }
 
-    public string? ModifiedBy { get; set; }
-
-    // Navigation Properties
-    public ICollection<Album> Albums { get; set; }
-    public ICollection<Genre> Genres { get; set; }
+    public string? ModifiedBy { get; set; } = "AudioPoolAdmin";
+    
+    
+    public ICollection<AlbumArtist> AlbumArtists { get; set; }
+    
+    public ICollection<ArtistGenre> Genres { get; set; }
 }

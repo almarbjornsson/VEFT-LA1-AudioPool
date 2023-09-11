@@ -1,6 +1,8 @@
+using AudioPool.Models;
+
 namespace Models.DTOs;
 
-public class AlbumDetailsDto
+public class AlbumDetailsDto : HyperMediaModel
 {
     public int Id { get; set; }
     public string Name { get; set; }

@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Models.Entities;
 using System.Threading.Tasks;
+using AudioPool.Models;
 using Common.Interfaces;
+using Models.DTOs;
 
 namespace Presentation.Controllers;
 [ApiController]
@@ -26,14 +28,54 @@ public class AlbumController : ControllerBase
             return NotFound();
         }
         // Otherwise, return the album
+        // Add hypermedia links to the album
+        
+        // add a link to the album's songs
+        album.Links.AddListReference("songs", new List<string> { $"/api/albums/{id}/songs" });
+        // Self
+        album.Links.AddReference("self", $"/api/albums/{id}");
+        // delete
+        album.Links.AddReference("delete", $"/api/albums/{id}");
+        // Artists
+        album.Links.AddListReference("artists", album.Artists.Select(a => $"/api/artists/{a.Id}"));
         return Ok(album);
     }
 
     [HttpGet("{id}/songs")]
     public async Task<IActionResult> GetSongsInAlbum(int id)
     {
-        return Ok(await _audioPoolService.GetSongsByAlbumId(id));
+        var songs = await _audioPoolService.GetSongsByAlbumId(id);
+        
+        List<SongDto> songDtosWithLinks = new List<SongDto>();
+        
+        // For each song, add hypermedia links
+        foreach (var song in songs)
+        {
+            // Self
+            song.Links.AddReference("self", $"/api/songs/{song.Id}");
+            // delete
+            song.Links.AddReference("delete", $"/api/songs/{song.Id}");
+            // edit
+            song.Links.AddReference("edit", $"/api/songs/{song.Id}");
+            // album
+            song.Links.AddReference("album", $"/api/albums/{id}");
+            
+            songDtosWithLinks.Add(song);
+        }
+        
+        return Ok(songDtosWithLinks);
     }
 
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteAlbum(int id)
+    {
+        var album = await _audioPoolService.GetAlbumByIdAsync(id);
+        if (album == null)
+        {
+            return NotFound();
+        }
+        await _audioPoolService.DeleteAlbumByIdAsync(id);
+        return NoContent();
+    }
 
 }

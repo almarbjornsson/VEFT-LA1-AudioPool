@@ -20,6 +20,11 @@ public class AudioPoolService : IAudioPoolService
         return await _repository.GetAlbumByIdAsync(id);
     }
 
+    public async Task DeleteAlbumByIdAsync(int id)
+    {
+        await _repository.DeleteAlbumByIdAsync(id);
+    }
+
     public async Task<IEnumerable<SongDto>> GetSongsByAlbumId(int id)
     {
         return await _repository.GetSongsByAlbumId(id);
