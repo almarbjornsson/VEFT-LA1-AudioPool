@@ -2,6 +2,7 @@ using Models.DTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Models.InputModels;
+using Models.Entities;
 
 namespace Common.Interfaces;
 public interface IAudioPoolService
@@ -16,6 +17,9 @@ public interface IAudioPoolService
     Task<SongDetailsDto?> GetSongByIdAsync(int id);
     
     Task DeleteSongByIdAsync(int id);
+    
+    Task UpdateSongByIdAsync(int id, Song updatedSong);
+
 
     
 }

@@ -100,6 +100,21 @@ public class AudioPoolRepository : IAudioPoolRepository
         _context.Songs.Remove(song);
         await _context.SaveChangesAsync();
     }
+    
+    public async Task UpdateSongByIdAsync(int id, Song updatedSong)
+    {
+        var song = await _context.Songs.FindAsync(id);
+        if (song == null)
+        {
+            throw new ArgumentException($"Song with id {id} does not exist");
+        }
+
+        song.Name = updatedSong.Name;
+        song.Duration = updatedSong.Duration;
+
+        await _context.SaveChangesAsync();
+    }
+
 
     public async Task<AlbumDetailsDto?> GetAlbumByIdAsync(int id)
     {

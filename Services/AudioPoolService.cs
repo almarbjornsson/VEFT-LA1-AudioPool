@@ -82,4 +82,9 @@ public class AudioPoolService : IAudioPoolService
     {
         await _repository.DeleteSongByIdAsync(id);
     }
+    
+    public async Task UpdateSongByIdAsync(int id, Song updatedSong)
+    {
+        await _repository.UpdateSongByIdAsync(id, updatedSong);
+    }
 }

@@ -52,5 +52,27 @@ namespace Presentation.Controllers
             await _audioPoolService.DeleteSongByIdAsync(id);
             return NoContent();
         }
+        
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateSong(int id, [FromBody] SongDto songDto)
+        {
+            var existingSong = await _audioPoolService.GetSongByIdAsync(id);
+            if (existingSong == null)
+            {
+                return NotFound();
+            }
+
+            // Map the DTO to the entity model
+            var updatedSong = new Song
+            {
+                Name = songDto.Name,
+                Duration = songDto.Duration
+            };
+
+            await _audioPoolService.UpdateSongByIdAsync(id, updatedSong);
+
+            return NoContent();
+        }
+
     }
 }
