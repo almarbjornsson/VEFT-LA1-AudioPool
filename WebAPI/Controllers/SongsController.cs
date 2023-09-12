@@ -23,13 +23,16 @@ namespace Presentation.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSongById(int id)
         {
+            // Try getting the song
             var song = await _audioPoolService.GetSongByIdAsync(id);
-
+            // If the song is null, return a 404
             if (song == null)
             {
                 return NotFound();
             }
+            // Otherwise, return the song
             
+            // Add hypermedia links to the song
             song.Links.AddReference("self", $"/api/songs/{id}");
             song.Links.AddReference("delete", $"/api/songs/{id}");
             song.Links.AddReference("edit", $"/api/songs/{id}");
@@ -37,6 +40,17 @@ namespace Presentation.Controllers
 
             return Ok(song);
         }
-
+        
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteSong(int id)
+        {
+            var song = await _audioPoolService.GetSongByIdAsync(id);
+            if (song == null)
+            {
+                return NotFound();
+            }
+            await _audioPoolService.DeleteSongByIdAsync(id);
+            return NoContent();
+        }
     }
 }

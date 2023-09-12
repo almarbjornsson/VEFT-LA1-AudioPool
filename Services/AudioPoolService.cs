@@ -77,8 +77,9 @@ public class AudioPoolService : IAudioPoolService
     {
         return await _repository.GetSongByIdAsync(id);
     }
-
     
-    
-    
+    public async Task DeleteSongByIdAsync(int id)
+    {
+        await _repository.DeleteSongByIdAsync(id);
+    }
 }
