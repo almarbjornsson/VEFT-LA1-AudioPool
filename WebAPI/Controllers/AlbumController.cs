@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AudioPool.Models;
 using Common.Interfaces;
 using Models.DTOs;
+using Models.InputModels;
 
 namespace Presentation.Controllers;
 [ApiController]
@@ -86,5 +87,11 @@ public class AlbumController : ControllerBase
         await _audioPoolService.DeleteAlbumByIdAsync(id);
         return NoContent();
     }
-
+    
+    [HttpPost]
+    public async Task<IActionResult> CreateAlbum([FromBody] AlbumInputModel album)
+    {
+        var albumDto = await _audioPoolService.CreateAlbumAsync(album);
+        return CreatedAtAction(nameof(GetAlbumById), new { id = albumDto.Id }, albumDto);
+    }
 }

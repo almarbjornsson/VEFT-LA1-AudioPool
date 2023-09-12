@@ -6,6 +6,7 @@ using Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Models.DTOs;
 using Models.Entities;
+using Models.InputModels;
 using Repositories;
 
 namespace AudioPool.Models;
@@ -115,6 +116,20 @@ public class AudioPoolRepository : IAudioPoolRepository
         }
         _context.Albums.Remove(album);
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<Album> CreateAlbumAsync(Album album)
+    {
+        await _context.Albums.AddAsync(album);
+        await _context.SaveChangesAsync();
+        
+        // Sanity check - make sure the album was actually added by fetching it again
+        var albumFromDb = await _context.Albums.FindAsync(album.Id);
+        if (albumFromDb == null)
+        {
+            throw new Exception("Album was not added to the database");
+        }
+        return albumFromDb;
     }
 
 
