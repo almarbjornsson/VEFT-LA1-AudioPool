@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AudioPool.Models;
 using Common.Interfaces;
 using Models.DTOs;
+using Models.InputModels;
 using System.Collections.Generic;
 
 
@@ -54,25 +55,34 @@ namespace Presentation.Controllers
         }
         
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSong(int id, [FromBody] SongDto songDto)
+        public async Task<IActionResult> UpdateSong(int id, [FromBody] SongInputModel songInput)
         {
+            // Validate the model
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var existingSong = await _audioPoolService.GetSongByIdAsync(id);
             if (existingSong == null)
             {
                 return NotFound();
             }
 
-            // Map the DTO to the entity model
+            // Map the InputModel to the entity model
             var updatedSong = new Song
             {
-                Name = songDto.Name,
-                Duration = songDto.Duration
+                Id = id, 
+                Name = songInput.Name,
+                Duration = songInput.Duration,
+                AlbumId = songInput.AlbumId 
             };
 
             await _audioPoolService.UpdateSongByIdAsync(id, updatedSong);
 
             return NoContent();
         }
+
 
     }
 }

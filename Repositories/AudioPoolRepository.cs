@@ -111,6 +111,7 @@ public class AudioPoolRepository : IAudioPoolRepository
 
         song.Name = updatedSong.Name;
         song.Duration = updatedSong.Duration;
+        song.AlbumId = updatedSong.AlbumId;
 
         await _context.SaveChangesAsync();
     }
