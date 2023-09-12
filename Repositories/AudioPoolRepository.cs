@@ -48,15 +48,46 @@ public class AudioPoolRepository : IAudioPoolRepository
             Songs = album.Songs?.Select(s => MapSongToDto(s)) ?? Enumerable.Empty<SongDto>(),
         };
     }
+    
+    private AlbumDto MapAlbumToDtoSimple(Album album)
+    {
+        return new AlbumDto
+        {
+            Id = album.Id,
+            Name = album.Name,
+            ReleaseDate = album.ReleaseDate,
+            CoverImageUrl = album.CoverImageUrl,
+            Description = album.Description,
+        };
+    }
 
-    
-    
-    
+
     public AudioPoolRepository(AudioPoolDbContext context)
     {
         _context = context;
     }
 
+
+    public async Task<SongDetailsDto?> GetSongByIdAsync(int id)
+    {
+        var song = await _context.Songs
+            .Include(s => s.Album) // Eagerly load Album data
+            .FirstOrDefaultAsync(s => s.Id == id);
+
+        if (song == null)
+        {
+            return null;
+        }
+
+        var songDetailsDto = new SongDetailsDto
+        {
+            Id = song.Id,
+            Name = song.Name,
+            Duration = song.Duration,
+            Album = MapAlbumToDtoSimple(song.Album)
+        };
+        return songDetailsDto;
+    }
 
     public async Task<AlbumDetailsDto?> GetAlbumByIdAsync(int id)
     {
@@ -97,4 +128,5 @@ public class AudioPoolRepository : IAudioPoolRepository
         var songDtos = songs.Select(s => MapSongToDto(s));
         return songDtos;
     }
+
 }

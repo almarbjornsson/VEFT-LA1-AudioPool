@@ -29,4 +29,13 @@ public class AudioPoolService : IAudioPoolService
     {
         return await _repository.GetSongsByAlbumId(id);
     }
+    // AudioPoolService.cs
+    public async Task<SongDetailsDto?> GetSongByIdAsync(int id)
+    {
+        return await _repository.GetSongByIdAsync(id);
+    }
+
+    
+    
+    
 }

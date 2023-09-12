@@ -11,6 +11,7 @@ public class Song
 
     [Required]
     public TimeSpan Duration { get; set; }
+    
 
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime DateCreated { get; set; }
