@@ -72,7 +72,6 @@ public class AudioPoolService : IAudioPoolService
     {
         return await _repository.GetSongsByAlbumId(id);
     }
-    // AudioPoolService.cs
     public async Task<SongDetailsDto?> GetSongByIdAsync(int id)
     {
         return await _repository.GetSongByIdAsync(id);
@@ -86,5 +85,13 @@ public class AudioPoolService : IAudioPoolService
     public async Task UpdateSongByIdAsync(int id, Song updatedSong)
     {
         await _repository.UpdateSongByIdAsync(id, updatedSong);
+    }
+    
+    public async Task<SongDetailsDto> CreateSongAsync(Song newSong)
+    {
+        // Call the repository to create the new song and get the DTO
+        var createdSongDto = await _repository.CreateSongAsync(newSong);
+
+        return createdSongDto;
     }
 }

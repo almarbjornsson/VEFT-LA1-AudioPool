@@ -19,7 +19,7 @@ public interface IAudioPoolService
     Task DeleteSongByIdAsync(int id);
     
     Task UpdateSongByIdAsync(int id, Song updatedSong);
-
-
+    
+    Task<SongDetailsDto> CreateSongAsync(Song newSong);
     
 }

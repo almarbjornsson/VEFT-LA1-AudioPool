@@ -82,7 +82,31 @@ namespace Presentation.Controllers
 
             return NoContent();
         }
+        
+        // post 
+        [HttpPost]
+        public async Task<IActionResult> CreateSong([FromBody] SongInputModel songInput)
+        {
+            // Validate the input model
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
+            // Map the input model to the entity model
+            var newSong = new Song
+            {
+                Name = songInput.Name,
+                Duration = songInput.Duration,
+                AlbumId = songInput.AlbumId
+            };
 
+            // Call the service to create the new song
+            var createdSong = await _audioPoolService.CreateSongAsync(newSong);
+
+            // Return the created song along with a 201 Created status code
+            return CreatedAtAction(nameof(GetSongById), new { id = createdSong.Id }, createdSong);
+        }
+        
     }
 }

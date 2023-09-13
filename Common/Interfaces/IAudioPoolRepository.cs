@@ -17,5 +17,7 @@ public interface IAudioPoolRepository
     Task DeleteSongByIdAsync(int id);
     
     Task UpdateSongByIdAsync(int id, Song updatedSong);
+    
+    Task<SongDetailsDto> CreateSongAsync(Song newSong);
 
 }

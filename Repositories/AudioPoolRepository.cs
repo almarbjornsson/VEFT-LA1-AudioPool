@@ -51,7 +51,7 @@ public class AudioPoolRepository : IAudioPoolRepository
     }
     
     private AlbumDto MapAlbumToDtoSimple(Album album)
-    {
+    {  
         return new AlbumDto
         {
             Id = album.Id,
@@ -72,7 +72,7 @@ public class AudioPoolRepository : IAudioPoolRepository
     public async Task<SongDetailsDto?> GetSongByIdAsync(int id)
     {
         var song = await _context.Songs
-            .Include(s => s.Album) // Eagerly load Album data
+            .Include(s => s.Album) 
             .FirstOrDefaultAsync(s => s.Id == id);
 
         if (song == null)
@@ -115,6 +115,25 @@ public class AudioPoolRepository : IAudioPoolRepository
 
         await _context.SaveChangesAsync();
     }
+    
+    public async Task<SongDetailsDto> CreateSongAsync(Song newSong)
+    {
+        newSong.DateCreated = DateTime.UtcNow;
+
+        await _context.Songs.AddAsync(newSong);
+        await _context.SaveChangesAsync();
+
+        // Map the created song to its DTO
+        var createdSongDto = new SongDetailsDto
+        {
+            Id = newSong.Id,
+            Name = newSong.Name,
+            Duration = newSong.Duration
+        };    
+
+        return createdSongDto;
+    }
+
 
 
     public async Task<AlbumDetailsDto?> GetAlbumByIdAsync(int id)
