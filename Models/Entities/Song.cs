@@ -16,7 +16,6 @@ public class Song
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime DateCreated { get; set; }
 
-    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime? DateModified { get; set; }
 
     public string? ModifiedBy { get; set; } = "AudioPoolAdmin";

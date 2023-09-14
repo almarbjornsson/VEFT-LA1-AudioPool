@@ -112,14 +112,13 @@ public class AudioPoolRepository : IAudioPoolRepository
         song.Name = updatedSong.Name;
         song.Duration = updatedSong.Duration;
         song.AlbumId = updatedSong.AlbumId;
-
+	    song.DateModified = DateTime.UtcNow;
         await _context.SaveChangesAsync();
     }
     
     public async Task<SongDetailsDto> CreateSongAsync(Song newSong)
     {
         newSong.DateCreated = DateTime.UtcNow;
-
         await _context.Songs.AddAsync(newSong);
         await _context.SaveChangesAsync();
 

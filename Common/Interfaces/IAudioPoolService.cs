@@ -12,6 +12,7 @@ public interface IAudioPoolService
     Task DeleteAlbumByIdAsync(int id);
     
     Task<AlbumDetailsDto> CreateAlbumAsync(AlbumInputModel albumInputModel);
+    
     Task<IEnumerable<SongDto>> GetSongsByAlbumId(int id);
     
     Task<SongDetailsDto?> GetSongByIdAsync(int id);
