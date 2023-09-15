@@ -11,7 +11,9 @@ public interface IAudioPoolRepository
     Task DeleteAlbumByIdAsync(int id);
     
     Task<Album> CreateAlbumAsync(Album album);
+    
     Task<IEnumerable<SongDto>> GetSongsByAlbumId(int id);
+    
     Task<SongDetailsDto?> GetSongByIdAsync(int id);
     
     Task DeleteSongByIdAsync(int id);
