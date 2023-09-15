@@ -86,7 +86,7 @@ public class AudioPoolService : IAudioPoolService
     {
         await _repository.UpdateSongByIdAsync(id, updatedSong);
     }
-    
+
     public async Task<SongDetailsDto> CreateSongAsync(Song newSong)
     {
         // Call the repository to create the new song and get the DTO
@@ -94,4 +94,31 @@ public class AudioPoolService : IAudioPoolService
 
         return createdSongDto;
     }
+    
+    public async Task<GenreDetailsDto?> GetGenreByIdAsync(int id)
+    {
+        return await _repository.GetGenreByIdAsync(id);
+    }
+
+    public async Task<GenreDetailsDto> CreateGenreAsync(Genre newGenre)
+    {
+        // Call the repository to create the new genre and get the DTO
+        var createdGenreDto = await _repository.CreateGenreAsync(newGenre);
+
+        return createdGenreDto;
+    }
+
+    public async Task<ArtistDetailsDto?> GetArtistByIdAsync(int id)
+    {
+        return await _repository.GetArtistByIdAsync(id);
+    }
+
+    public async Task<ArtistDetailsDto> CreateArtistAsync(Artist newArtist)
+    {
+        // Call the repository to create the new genre and get the DTO
+        var createdArtistDto = await _repository.CreateArtistAsync(newArtist);
+
+        return createdArtistDto;
+    }
 }
+

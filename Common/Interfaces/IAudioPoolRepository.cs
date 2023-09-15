@@ -19,5 +19,13 @@ public interface IAudioPoolRepository
     Task UpdateSongByIdAsync(int id, Song updatedSong);
     
     Task<SongDetailsDto> CreateSongAsync(Song newSong);
+    
+    Task<GenreDetailsDto?> GetGenreByIdAsync(int id);
+    
+    Task<GenreDetailsDto> CreateGenreAsync(Genre newGenre);
+    
+    Task<ArtistDetailsDto?> GetArtistByIdAsync(int id);
+    
+    Task<ArtistDetailsDto> CreateArtistAsync(Artist newArtist);
 
 }

@@ -36,6 +36,15 @@ public class AudioPoolRepository : IAudioPoolRepository
             Duration = song.Duration,
         };
     }
+
+    private GenreDto mapGenreToDto(Genre genre)
+    {
+        return new GenreDto
+        {
+            Id = genre.Id,
+            Name = genre.Name
+        };
+    }
     
     private AlbumDetailsDto MapAlbumToDto(Album album)
     {
@@ -178,7 +187,6 @@ public class AudioPoolRepository : IAudioPoolRepository
         return albumFromDb;
     }
 
-
     public async Task<IEnumerable<SongDto>> GetSongsByAlbumId(int id)
     {
         var songs = await _context.Songs.Where(s => s.AlbumId == id).ToListAsync();
@@ -188,6 +196,78 @@ public class AudioPoolRepository : IAudioPoolRepository
         }
         var songDtos = songs.Select(s => MapSongToDto(s));
         return songDtos;
+    }
+    
+    public async Task<GenreDetailsDto?> GetGenreByIdAsync(int id)
+    {
+        var genre = await _context.Genres
+            .Include(g => g.Name) 
+            .FirstOrDefaultAsync(g => g.Id == id);
+
+        if (genre == null)
+        {
+            return null;
+        }
+
+        var genreDetailsDto = new GenreDetailsDto
+        {
+            Id = genre.Id,
+            Name = genre.Name,
+        };
+        return genreDetailsDto;
+    }
+    
+    public async Task<GenreDetailsDto> CreateGenreAsync(Genre newGenre)
+    {
+        newGenre.DateCreated = DateTime.UtcNow;
+
+        await _context.Genres.AddAsync(newGenre);
+        await _context.SaveChangesAsync();
+
+        // Map the created genre to its DTO
+        var createdGenreDto = new GenreDetailsDto
+        {
+            Id = newGenre.Id,
+            Name = newGenre.Name
+        };    
+
+        return createdGenreDto;
+    }
+
+    public async Task<ArtistDetailsDto?> GetArtistByIdAsync(int id)
+    {
+        var artist = await _context.Artists
+            .Include(g => g.Name) 
+            .FirstOrDefaultAsync(g => g.Id == id);
+
+        if (artist == null)
+        {
+            return null;
+        }
+
+        var artistDetailsDto = new ArtistDetailsDto
+        {
+            Id = artist.Id,
+            Name = artist.Name,
+        };
+        return artistDetailsDto;
+    }
+
+    public async Task<ArtistDetailsDto> CreateArtistAsync(Artist newArtist)
+    {
+        newArtist.DateCreated = DateTime.UtcNow;
+
+        await _context.Artists.AddAsync(newArtist);
+        await _context.SaveChangesAsync();
+
+        // Map the created genre to its DTO
+        var createdArtistDto = new ArtistDetailsDto
+        {
+            Id = newArtist.Id,
+            Name = newArtist.Name
+        };    
+
+        return createdArtistDto;
     }
 
 }
