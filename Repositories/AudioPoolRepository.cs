@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Models.DTOs;
 using Models.Entities;
 using Models.InputModels;
@@ -196,11 +197,22 @@ public class AudioPoolRepository : IAudioPoolRepository
         var songDtos = songs.Select(s => MapSongToDto(s));
         return songDtos;
     }
-    
+
+
+    public async Task<IEnumerable<GenreDto>> GetAllGenres()
+    {
+        var genres = await _context.Genres.ToListAsync();
+        if (genres == null)
+        {
+            return Enumerable.Empty<GenreDto>();
+        }
+        var genresDtos = genres.Select(g => mapGenreToDto(g));
+        return genresDtos;
+    }
+
     public async Task<GenreDetailsDto?> GetGenreByIdAsync(int id)
     {
         var genre = await _context.Genres
-            .Include(g => g.Name) 
             .FirstOrDefaultAsync(g => g.Id == id);
 
         if (genre == null)
@@ -233,10 +245,21 @@ public class AudioPoolRepository : IAudioPoolRepository
         return createdGenreDto;
     }
 
+
+    public async Task<IEnumerable<ArtistDto>> GetAllArtists()
+    {
+        var artists = await _context.Artists.ToListAsync();
+        if (artists == null)
+        {
+            return Enumerable.Empty<ArtistDto>();
+        }
+        var artistsDtos = artists.Select(a => MapArtistToDto(a));
+        return artistsDtos;
+    }
+
     public async Task<ArtistDetailsDto?> GetArtistByIdAsync(int id)
     {
         var artist = await _context.Artists
-            .Include(g => g.Name) 
             .FirstOrDefaultAsync(g => g.Id == id);
 
         if (artist == null)
@@ -267,6 +290,21 @@ public class AudioPoolRepository : IAudioPoolRepository
         };    
 
         return createdArtistDto;
+    }
+
+    public async Task UpdateArtistByIdAsync(int id, Artist updatedArtist)
+    {
+        var artist = await _context.Artists.FindAsync(id);
+        if (artist == null)
+        {
+            throw new ArgumentException($"Artist with id {id} does not exist");
+        }
+
+        artist.Name = updatedArtist.Name;
+        artist.Bio = updatedArtist.Bio;
+        artist.CoverImageUrl = updatedArtist.CoverImageUrl;
+        artist.DateModified = DateTime.UtcNow;
+        await _context.SaveChangesAsync();
     }
 
 }

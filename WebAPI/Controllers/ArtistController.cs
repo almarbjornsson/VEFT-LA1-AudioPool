@@ -20,6 +20,14 @@ namespace Presentation.Controllers
         {
             _audioPoolService = audioPoolService;
         }
+        
+        [HttpGet("")]
+        public async Task<IActionResult> GetAllArtists()
+        {
+            var artists = await _audioPoolService.GetAllArtists();
+
+            return Ok(artists);
+        }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetArtistById(int id)
@@ -61,5 +69,31 @@ namespace Presentation.Controllers
             return CreatedAtAction(nameof(GetArtistById), new { id = createdArtist.Id }, createdArtist);
         }
         
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateArtist(int id, [FromBody] ArtistInputModel artistInput)
+        {
+            if (!ModelState.IsValid)
+            {
+                throw new ArgumentException("Invalid input.");
+            }
+
+            var existingArtist = await _audioPoolService.GetArtistByIdAsync(id);
+            if (existingArtist == null)
+            {
+                throw new ArgumentException("Artist not found.");
+            }
+
+            var updatedArtist = new Artist
+            {
+                Id = id,
+                Name = artistInput.Name,
+                Bio = artistInput.Bio,
+                CoverImageUrl = artistInput.CoverImageUrl,
+            };
+
+            await _audioPoolService.UpdateArtistByIdAsync(id, updatedArtist);
+            return NoContent();
+        }
+
     }
 }

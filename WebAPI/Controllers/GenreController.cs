@@ -20,6 +20,14 @@ namespace Presentation.Controllers
         {
             _audioPoolService = audioPoolService;
         }
+        
+        [HttpGet("")]
+        public async Task<IActionResult> GetAllGenres()
+        {
+            var genres = await _audioPoolService.GetAllGenres();
+
+            return Ok(genres);
+        }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetGenreById(int id)
@@ -29,11 +37,11 @@ namespace Presentation.Controllers
             // If the genre is null, return a 404
             if (genre == null)
             {
-                return NotFound();
+                throw new ArgumentException("Genre not found.");
             }
             // Otherwise, return the genre
             
-            // TODO: Add hypermedia links to the genre
+            // Add hypermedia links to the genre
 
             return Ok(genre);
         }

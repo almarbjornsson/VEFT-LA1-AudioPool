@@ -23,13 +23,19 @@ public interface IAudioPoolService
     
     Task<SongDetailsDto> CreateSongAsync(Song newSong);
 
+    Task<IEnumerable<GenreDto>> GetAllGenres();
+
     Task<GenreDetailsDto?> GetGenreByIdAsync(int id);
     
     Task<GenreDetailsDto> CreateGenreAsync(Genre newGenre);
+
+    Task<IEnumerable<ArtistDto>> GetAllArtists();
     
     Task<ArtistDetailsDto?> GetArtistByIdAsync(int id);
     
     Task<ArtistDetailsDto> CreateArtistAsync(Artist newArtist);
+
+    Task UpdateArtistByIdAsync(int id, Artist updatedArtist);
 
 
 }

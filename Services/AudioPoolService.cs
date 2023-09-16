@@ -95,6 +95,11 @@ public class AudioPoolService : IAudioPoolService
         return createdSongDto;
     }
     
+    public async Task<IEnumerable<GenreDto>> GetAllGenres()
+    {
+        return await _repository.GetAllGenres();
+    }
+    
     public async Task<GenreDetailsDto?> GetGenreByIdAsync(int id)
     {
         return await _repository.GetGenreByIdAsync(id);
@@ -106,6 +111,11 @@ public class AudioPoolService : IAudioPoolService
         var createdGenreDto = await _repository.CreateGenreAsync(newGenre);
 
         return createdGenreDto;
+    }
+    
+    public async Task<IEnumerable<ArtistDto>> GetAllArtists()
+    {
+        return await _repository.GetAllArtists();
     }
 
     public async Task<ArtistDetailsDto?> GetArtistByIdAsync(int id)
@@ -119,6 +129,11 @@ public class AudioPoolService : IAudioPoolService
         var createdArtistDto = await _repository.CreateArtistAsync(newArtist);
 
         return createdArtistDto;
+    }
+    
+    public async Task UpdateArtistByIdAsync(int id, Artist updatedArtist)
+    {
+        await _repository.UpdateArtistByIdAsync(id, updatedArtist);
     }
 }
 
