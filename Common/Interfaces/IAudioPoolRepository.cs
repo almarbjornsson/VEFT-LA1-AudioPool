@@ -2,6 +2,7 @@ using Models.DTOs;
 using Models.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AudioPool.Models;
 
 namespace Common.Interfaces;
 public interface IAudioPoolRepository
@@ -28,7 +29,7 @@ public interface IAudioPoolRepository
     
     Task<GenreDetailsDto> CreateGenreAsync(Genre newGenre);
 
-    Task<IEnumerable<ArtistDto>> GetAllArtists();
+    Task<Envelope<ArtistDto>> GetAllArtists(int pageNumber, int pageSize);
     
     Task<ArtistDetailsDto?> GetArtistByIdAsync(int id);
     

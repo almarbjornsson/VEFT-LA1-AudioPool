@@ -22,9 +22,12 @@ namespace Presentation.Controllers
         }
         
         [HttpGet("")]
-        public async Task<IActionResult> GetAllArtists()
+        public async Task<IActionResult> GetAllArtists(
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 25
+            )
         {
-            var artists = await _audioPoolService.GetAllArtists();
+            var artists = await _audioPoolService.GetAllArtists(pageNumber, pageSize);
 
             return Ok(artists);
         }

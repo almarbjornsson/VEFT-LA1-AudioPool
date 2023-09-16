@@ -2,6 +2,7 @@ using Common.Interfaces;
 using Models.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AudioPool.Models;
 using Mapster;
 using Models.DTOs;
 using Models.InputModels;
@@ -89,9 +90,9 @@ public class AudioPoolService : IAudioPoolService
         return createdGenreDto;
     }
     
-    public async Task<IEnumerable<ArtistDto>> GetAllArtists()
+    public async Task<Envelope<ArtistDto>> GetAllArtists(int pageNumber, int pageSize)
     {
-        return await _repository.GetAllArtists();
+        return await _repository.GetAllArtists(pageNumber, pageSize);
     }
 
     public async Task<ArtistDetailsDto?> GetArtistByIdAsync(int id)

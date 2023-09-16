@@ -246,15 +246,20 @@ public class AudioPoolRepository : IAudioPoolRepository
     }
 
 
-    public async Task<IEnumerable<ArtistDto>> GetAllArtists()
+    public async Task<Envelope<ArtistDto>> GetAllArtists(int pageNumber, int pageSize)
     {
-        var artists = await _context.Artists.ToListAsync();
-        if (artists == null)
-        {
-            return Enumerable.Empty<ArtistDto>();
-        }
+        var artists = await _context.Artists
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+        
+
         var artistsDtos = artists.Select(a => MapArtistToDto(a));
-        return artistsDtos;
+        
+        
+        artistsDtos = artistsDtos.OrderByDescending(a => a.DateOfStart);
+
+        return new Envelope<ArtistDto>(pageNumber, pageSize, artistsDtos);
     }
 
     public async Task<ArtistDetailsDto?> GetArtistByIdAsync(int id)
