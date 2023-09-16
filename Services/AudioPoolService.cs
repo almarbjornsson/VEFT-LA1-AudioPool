@@ -2,6 +2,7 @@ using Common.Interfaces;
 using Models.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Mapster;
 using Models.DTOs;
 using Models.InputModels;
 
@@ -29,42 +30,17 @@ public class AudioPoolService : IAudioPoolService
     public async Task<AlbumDetailsDto> CreateAlbumAsync(AlbumInputModel albumInputModel)
     {
         // Map the input model to an album
-        var album = new Album
-        {
-            Name = albumInputModel.Name,
-            ReleaseDate = albumInputModel.ReleaseDate,
-            CoverImageUrl = albumInputModel.CoverImageUrl,
-            Description = albumInputModel.Description,
-            AlbumArtists = albumInputModel.ArtistIds.Select(a => new AlbumArtist
-            {
-                ArtistsId = a
-            }).ToList(),
-        };
+        var album = albumInputModel.Adapt<Album>();
+        
+        
         // Create the album - this should return the album from the database
         var albumFromDb = await _repository.CreateAlbumAsync(album);
         
+        
         // Map the album from the database to a DTO
-        var albumDto = new AlbumDetailsDto
-        {
-            Id = albumFromDb.Id,
-            Name = albumFromDb.Name,
-            ReleaseDate = albumFromDb.ReleaseDate,
-            CoverImageUrl = albumFromDb.CoverImageUrl,
-            Artists = albumFromDb.AlbumArtists?.Select(a => new ArtistDto
-            {
-                Id = a.ArtistsId,
-                Name = a.Artist.Name,
-                Bio = a.Artist.Bio,
-                CoverImageUrl = a.Artist.CoverImageUrl,
-                DateOfStart = DateTime.Parse(a.Artist.DateStarted)
-            }) ?? Enumerable.Empty<ArtistDto>(),
-            Songs = albumFromDb.Songs?.Select(s => new SongDto
-            {
-                Id = s.Id,
-                Name = s.Name,
-                Duration = s.Duration,
-            }) ?? Enumerable.Empty<SongDto>(),
-        };
+        var albumDto = albumFromDb.Adapt<AlbumDetailsDto>();
+        
+        
         return albumDto;
     }
 
