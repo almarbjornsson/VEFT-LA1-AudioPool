@@ -5,8 +5,9 @@ using AudioPool.Models;
 using Common.Interfaces;
 using Models.DTOs;
 using Models.InputModels;
+using WebAPI.Attributes;
 
-namespace Presentation.Controllers;
+namespace WebAPI.Controllers;
 [ApiController]
 [Route("api/albums")]
 public class AlbumController : ControllerBase
@@ -76,6 +77,7 @@ public class AlbumController : ControllerBase
         return Ok(songDtosWithLinks);
     }
 
+    [BasicTokenAuthorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAlbum(int id)
     {
@@ -88,6 +90,7 @@ public class AlbumController : ControllerBase
         return NoContent();
     }
     
+    [BasicTokenAuthorize]
     [HttpPost]
     public async Task<IActionResult> CreateAlbum([FromBody] AlbumInputModel album)
     {

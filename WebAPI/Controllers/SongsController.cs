@@ -7,8 +7,9 @@ using Common.Interfaces;
 using Models.DTOs;
 using Models.InputModels;
 using System.Collections.Generic;
+using WebAPI.Attributes;
 
-namespace Presentation.Controllers
+namespace WebAPI.Controllers
 {
     [ApiController]
     [Route("api/songs")]
@@ -39,6 +40,7 @@ namespace Presentation.Controllers
             return Ok(song);
         }
 
+        [BasicTokenAuthorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSong(int id)
         {
@@ -51,6 +53,7 @@ namespace Presentation.Controllers
             return NoContent();
         }
 
+        [BasicTokenAuthorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSong(int id, [FromBody] SongInputModel songInput)
         {
@@ -77,6 +80,7 @@ namespace Presentation.Controllers
             return NoContent();
         }
 
+        [BasicTokenAuthorize]
         [HttpPost]
         public async Task<IActionResult> CreateSong([FromBody] SongInputModel songInput)
         {

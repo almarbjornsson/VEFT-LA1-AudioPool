@@ -6,9 +6,10 @@ using Common.Interfaces;
 using Models.DTOs;
 using Models.InputModels;
 using System.Collections.Generic;
+using WebAPI.Attributes;
 
 
-namespace Presentation.Controllers
+namespace WebAPI.Controllers
 {
     [ApiController]
     [Route("api/artist")]
@@ -49,7 +50,7 @@ namespace Presentation.Controllers
             return Ok(artist);
         }
 
-        // post 
+        [BasicTokenAuthorize]
         [HttpPost]
         public async Task<IActionResult> CreateArtist([FromBody] GenreInputModel artistInput)
         {
@@ -72,6 +73,7 @@ namespace Presentation.Controllers
             return CreatedAtAction(nameof(GetArtistById), new { id = createdArtist.Id }, createdArtist);
         }
         
+        [BasicTokenAuthorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateArtist(int id, [FromBody] ArtistInputModel artistInput)
         {
@@ -97,6 +99,6 @@ namespace Presentation.Controllers
             await _audioPoolService.UpdateArtistByIdAsync(id, updatedArtist);
             return NoContent();
         }
-
+    // TODO: authorization for linking artist to genre (EKKI GLEYMA)
     }
 }

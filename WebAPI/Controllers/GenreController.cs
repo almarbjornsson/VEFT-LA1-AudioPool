@@ -6,9 +6,10 @@ using Common.Interfaces;
 using Models.DTOs;
 using Models.InputModels;
 using System.Collections.Generic;
+using WebAPI.Attributes;
 
 
-namespace Presentation.Controllers
+namespace WebAPI.Controllers
 {
     [ApiController]
     [Route("api/genre")]
@@ -46,7 +47,7 @@ namespace Presentation.Controllers
             return Ok(genre);
         }
 
-        // post 
+        [BasicTokenAuthorize]
         [HttpPost]
         public async Task<IActionResult> CreateGenre([FromBody] GenreInputModel genreInput)
         {
