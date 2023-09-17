@@ -27,5 +27,5 @@ public class Artist
     
     public ICollection<AlbumArtist> AlbumArtists { get; set; }
     
-    public ICollection<ArtistGenre> Genres { get; set; }
+    public ICollection<ArtistGenre> ArtistGenres { get; set; }
 }

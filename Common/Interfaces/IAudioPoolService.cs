@@ -40,6 +40,7 @@ public interface IAudioPoolService
     Task UpdateArtistByIdAsync(int id, Artist updatedArtist);
     
     Task<IEnumerable<AlbumDto>> GetAlbumsByArtistId(int id);
-
+    
+    Task LinkArtistToGenre(int artistId, int genreId);
 
 }

@@ -117,6 +117,11 @@ public class AudioPoolService : IAudioPoolService
     {
         return await _repository.GetAlbumsByArtistId(id);
     }
+
+    public async Task LinkArtistToGenre(int artistId, int genreId)
+    {
+        await _repository.LinkArtistToGenre(artistId, genreId);
+    }
     
 }
 

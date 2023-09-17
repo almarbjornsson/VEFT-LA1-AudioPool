@@ -132,6 +132,13 @@ namespace WebAPI.Controllers
             return Ok(albumDtosWithLinks);
         }
         
-    // TODO: authorization for linking artist to genre (EKKI GLEYMA)
+        [HttpPost("{artistId}/genres/{genreId}")]
+        public async Task<IActionResult> LinkArtistToGenre(int artistId, int genreId)
+        {
+            await _audioPoolService.LinkArtistToGenre(artistId, genreId);
+            return NoContent(); // Return a success response
+        }
+        
+        
     }
 }

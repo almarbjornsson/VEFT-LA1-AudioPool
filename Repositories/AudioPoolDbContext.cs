@@ -35,7 +35,7 @@ namespace Repositories
 
             modelBuilder.Entity<ArtistGenre>()
                 .HasOne(ag => ag.Artist)
-                .WithMany(a => a.Genres)
+                .WithMany(a => a.ArtistGenres)
                 .HasForeignKey(ag => ag.ArtistId);
 
             modelBuilder.Entity<ArtistGenre>()

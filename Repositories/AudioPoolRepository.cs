@@ -331,5 +331,28 @@ public class AudioPoolRepository : IAudioPoolRepository
         var albumDtos = albums.Select(a => MapAlbumToDtoSimple(a));
         return albumDtos;
     }
+    
+    public async Task LinkArtistToGenre(int artistId, int genreId)
+    {
+        // Check if the artist and genre exist
+        var artist = await _context.Artists.FindAsync(artistId);
+        var genre = await _context.Genres.FindAsync(genreId);
+
+        if (artist == null)
+        {
+            throw new ArgumentException($"Artist with ID {artistId} was not found."); // Return false if either the artist
+        }
+
+        if (genre == null)
+        {
+            throw new ArgumentException($"Genre with ID {genreId} was not found."); // Return false if either the genre
+        }
+
+        // Add the genre to the artist's list of genres
+        artist.ArtistGenres.Add(new ArtistGenre { GenreId = genreId });
+
+        // Save changes to the database
+        await _context.SaveChangesAsync();
+    }
 
 }
