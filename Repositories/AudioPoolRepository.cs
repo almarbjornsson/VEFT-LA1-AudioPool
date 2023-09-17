@@ -314,7 +314,16 @@ public class AudioPoolRepository : IAudioPoolRepository
     
     public async Task<IEnumerable<AlbumDto>> GetAlbumsByArtistId(int id)
     {
-        var albums = await _context.Albums.Where(a => a.AlbumArtists == id).ToListAsync();
+        
+        var albums = await _context.Artists
+            .Include(a => a.AlbumArtists)
+            .ThenInclude(aa => aa.Album)
+            .Where(a => a.Id == id)
+            .SelectMany(a => a.AlbumArtists)
+            .Select(aa => aa.Album)
+            .ToListAsync();
+        
+        
         if (albums == null)
         {
             return Enumerable.Empty<AlbumDto>();
