@@ -31,17 +31,17 @@ namespace Repositories
             
             // Many-to-Many: ArtistGenre
             modelBuilder.Entity<ArtistGenre>()
-                .HasKey(ag => new { ag.ArtistId, ag.GenreId });
+                .HasKey(ag => new { ag.ArtistsId, ag.GenresId });
 
             modelBuilder.Entity<ArtistGenre>()
                 .HasOne(ag => ag.Artist)
                 .WithMany(a => a.ArtistGenres)
-                .HasForeignKey(ag => ag.ArtistId);
+                .HasForeignKey(ag => ag.ArtistsId);
 
             modelBuilder.Entity<ArtistGenre>()
                 .HasOne(ag => ag.Genre)
                 .WithMany(g => g.Artists)
-                .HasForeignKey(ag => ag.GenreId);
+                .HasForeignKey(ag => ag.GenresId);
         }
         
         public DbSet<Album> Albums { get; set; }

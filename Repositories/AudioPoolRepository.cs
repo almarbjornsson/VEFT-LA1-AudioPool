@@ -348,8 +348,17 @@ public class AudioPoolRepository : IAudioPoolRepository
             throw new ArgumentException($"Genre with ID {genreId} was not found."); // Return false if either the genre
         }
 
+        if (artist.ArtistGenres == null)
+        {
+            artist.ArtistGenres = new List<ArtistGenre>();
+        }
+        
         // Add the genre to the artist's list of genres
-        artist.ArtistGenres.Add(new ArtistGenre { GenreId = genreId });
+        artist.ArtistGenres.Add(new ArtistGenre
+        {
+            ArtistsId = artistId,
+            GenresId = genreId,
+        });
 
         // Save changes to the database
         await _context.SaveChangesAsync();
