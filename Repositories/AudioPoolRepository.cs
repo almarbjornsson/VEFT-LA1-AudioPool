@@ -38,7 +38,7 @@ public class AudioPoolRepository : IAudioPoolRepository
         };
     }
 
-    private GenreDto mapGenreToDto(Genre genre)
+    private GenreDto MapGenreToDto(Genre genre)
     {
         return new GenreDto
         {
@@ -206,7 +206,7 @@ public class AudioPoolRepository : IAudioPoolRepository
         {
             return Enumerable.Empty<GenreDto>();
         }
-        var genresDtos = genres.Select(g => mapGenreToDto(g));
+        var genresDtos = genres.Select(g => MapGenreToDto(g));
         return genresDtos;
     }
 
@@ -310,6 +310,17 @@ public class AudioPoolRepository : IAudioPoolRepository
         artist.CoverImageUrl = updatedArtist.CoverImageUrl;
         artist.DateModified = DateTime.UtcNow;
         await _context.SaveChangesAsync();
+    }
+    
+    public async Task<IEnumerable<AlbumDto>> GetAlbumsByArtistId(int id)
+    {
+        var albums = await _context.Albums.Where(a => a.AlbumArtists == id).ToListAsync();
+        if (albums == null)
+        {
+            return Enumerable.Empty<AlbumDto>();
+        }
+        var albumDtos = albums.Select(a => MapAlbumToDtoSimple(a));
+        return albumDtos;
     }
 
 }

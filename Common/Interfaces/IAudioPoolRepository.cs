@@ -36,5 +36,7 @@ public interface IAudioPoolRepository
     Task<ArtistDetailsDto> CreateArtistAsync(Artist newArtist);
 
     Task UpdateArtistByIdAsync(int id, Artist updatedArtist);
+    
+    Task<IEnumerable<AlbumDto>> GetAlbumsByArtistId(int id);
 
 }

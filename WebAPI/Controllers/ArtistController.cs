@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Models.Entities;
+using System;
 using System.Threading.Tasks;
 using AudioPool.Models;
 using Common.Interfaces;
@@ -36,16 +37,16 @@ namespace WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetArtistById(int id)
         {
-            // Try getting the genre
+            // Try getting the artist
             var artist = await _audioPoolService.GetArtistByIdAsync(id);
-            // If the genre is null, return a 404
+            // If the artist is null, return a 404
             if (artist == null)
             {
                 return NotFound();
             }
-            // Otherwise, return the genre
+            // Otherwise, return the artist
             
-            // TODO: Add hypermedia links to the genre
+            // Add hypermedia links to the artist...
 
             return Ok(artist);
         }

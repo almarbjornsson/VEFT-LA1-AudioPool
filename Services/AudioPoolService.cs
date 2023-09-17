@@ -112,5 +112,11 @@ public class AudioPoolService : IAudioPoolService
     {
         await _repository.UpdateArtistByIdAsync(id, updatedArtist);
     }
+
+    public async Task<IEnumerable<AlbumDto>> GetAlbumsByArtistId(int id)
+    {
+        return await _repository.GetAlbumsByArtistId(id);
+    }
+    
 }
 
