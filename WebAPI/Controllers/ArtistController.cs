@@ -46,7 +46,14 @@ namespace WebAPI.Controllers
             }
             // Otherwise, return the artist
             
-            // Add hypermedia links to the artist...
+            // Add hypermedia links to the artist
+            
+            // add a link to the artist's albums
+            artist.Links.AddListReference("albums", new List<string> { $"/api/artists/{id}/albums" });
+            // Self
+            artist.Links.AddReference("self", $"/api/artists/{id}");
+            // edit
+            artist.Links.AddReference("edit", $"/api/artists/{id}");
 
             return Ok(artist);
         }
@@ -100,6 +107,31 @@ namespace WebAPI.Controllers
             await _audioPoolService.UpdateArtistByIdAsync(id, updatedArtist);
             return NoContent();
         }
+
+        [HttpGet("{id}/albums")]
+        public async Task<IActionResult> GetAlbumsByArtistId(int id)
+        {
+            var albums = await _audioPoolService.GetAlbumsByArtistId(id);
+        
+            List<AlbumDto> albumDtosWithLinks = new List<AlbumDto>();
+            
+            // For each song, add hypermedia links
+            foreach (var album in albums)
+            {
+                // Self
+                album.Links.AddReference("self", $"/api/albums/{album.Id}");
+                // delete
+                album.Links.AddReference("delete", $"/api/albums/{album.Id}");
+                // album
+                album.Links.AddReference("album", $"/api/artist/{id}");
+            
+                albumDtosWithLinks.Add(album);
+            }
+            
+        
+            return Ok(albumDtosWithLinks);
+        }
+        
     // TODO: authorization for linking artist to genre (EKKI GLEYMA)
     }
 }

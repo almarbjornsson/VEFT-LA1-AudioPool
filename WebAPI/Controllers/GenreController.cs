@@ -43,6 +43,8 @@ namespace WebAPI.Controllers
             // Otherwise, return the genre
             
             // Add hypermedia links to the genre
+            // Self
+            genre.Links.AddReference("self", $"/api/genres/{id}");
 
             return Ok(genre);
         }
