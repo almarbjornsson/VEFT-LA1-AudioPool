@@ -24,8 +24,7 @@ public class AudioPoolRepository : IAudioPoolRepository
             Name = artist.Name,
             Bio = artist.Bio,
             CoverImageUrl = artist.CoverImageUrl,
-            // artist.DateStarted is a datetime string
-            DateOfStart = DateTime.Parse(artist.DateStarted)
+            DateOfStart = DateTime.Parse(artist.DateOfStart)
         };
     }
     private SongDto MapSongToDto(Song song)

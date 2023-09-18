@@ -16,8 +16,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<AudioPoolDbContext>(options => 
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<AudioPoolDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"),
+        x => x.MigrationsAssembly("WebAPI")));
+
+
 builder.Services.AddScoped<IAudioPoolRepository, AudioPoolRepository>();
 builder.Services.AddScoped<IAudioPoolService, AudioPoolService>();
 

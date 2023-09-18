@@ -15,7 +15,7 @@ public class Artist
     public string CoverImageUrl { get; set; }
 
     [Required]
-    public string DateStarted { get; set; }
+    public string DateOfStart { get; set; }
 
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime DateCreated { get; set; }
@@ -23,7 +23,6 @@ public class Artist
     public DateTime? DateModified { get; set; }
 
     public string? ModifiedBy { get; set; } = "AudioPoolAdmin";
-    
     
     public ICollection<AlbumArtist> AlbumArtists { get; set; }
     
