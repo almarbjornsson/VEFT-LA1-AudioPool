@@ -23,7 +23,7 @@ public class Album
     [DatabaseGenerated((DatabaseGeneratedOption.Computed))]
     public DateTime? DateModified { get; set; }
 
-    public string? ModifiedBy { get; set; } = "AudioPoolAdmin";
+    public string? ModifiedBy { get; set; }
 
     public ICollection<AlbumArtist> AlbumArtists { get; set; }
     

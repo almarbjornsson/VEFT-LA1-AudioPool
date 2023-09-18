@@ -60,7 +60,7 @@ namespace WebAPI.Controllers
 
         [BasicTokenAuthorize]
         [HttpPost]
-        public async Task<IActionResult> CreateArtist([FromBody] GenreInputModel artistInput)
+        public async Task<IActionResult> CreateArtist([FromBody] ArtistInputModel artistInput)
         {
             // Validate the input model
             if (!ModelState.IsValid)
@@ -72,6 +72,9 @@ namespace WebAPI.Controllers
             var newArtist = new Artist
             {
                 Name = artistInput.Name,
+                Bio = artistInput.Bio,
+                CoverImageUrl = artistInput.CoverImageUrl,
+                DateOfStart = artistInput.DateOfStart,
             };
 
             // Call the service to create the new song

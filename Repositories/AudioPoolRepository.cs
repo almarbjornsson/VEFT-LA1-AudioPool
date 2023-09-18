@@ -24,7 +24,7 @@ public class AudioPoolRepository : IAudioPoolRepository
             Name = artist.Name,
             Bio = artist.Bio,
             CoverImageUrl = artist.CoverImageUrl,
-            DateOfStart = DateTime.Parse(artist.DateOfStart)
+            DateOfStart = artist.DateOfStart,
         };
     }
     private SongDto MapSongToDto(Song song)
@@ -122,6 +122,7 @@ public class AudioPoolRepository : IAudioPoolRepository
         song.Duration = updatedSong.Duration;
         song.AlbumId = updatedSong.AlbumId;
 	    song.DateModified = DateTime.UtcNow;
+        song.ModifiedBy = "AudioPoolAdmin";
         await _context.SaveChangesAsync();
     }
     
@@ -318,7 +319,10 @@ public class AudioPoolRepository : IAudioPoolRepository
         var createdArtistDto = new ArtistDetailsDto
         {
             Id = newArtist.Id,
-            Name = newArtist.Name
+            Name = newArtist.Name,
+            Bio = newArtist.Bio,
+            CoverImageUrl = newArtist.CoverImageUrl,
+            DateOfStart = newArtist.DateOfStart,
         };    
 
         return createdArtistDto;
@@ -336,6 +340,7 @@ public class AudioPoolRepository : IAudioPoolRepository
         artist.Bio = updatedArtist.Bio;
         artist.CoverImageUrl = updatedArtist.CoverImageUrl;
         artist.DateModified = DateTime.UtcNow;
+        artist.ModifiedBy = "AudioPoolAdmin";
         await _context.SaveChangesAsync();
     }
     

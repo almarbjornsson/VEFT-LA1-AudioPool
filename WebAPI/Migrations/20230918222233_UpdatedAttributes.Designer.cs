@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repositories;
 
@@ -10,9 +11,11 @@ using Repositories;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(AudioPoolDbContext))]
-    partial class AudioPoolDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230918222233_UpdatedAttributes")]
+    partial class UpdatedAttributes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.10");
@@ -90,7 +93,8 @@ namespace WebAPI.Migrations
                     b.Property<DateTime?>("DateModified")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("DateOfStart")
+                    b.Property<string>("DateOfStart")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedBy")

@@ -18,7 +18,7 @@ public class Song
 
     public DateTime? DateModified { get; set; }
 
-    public string? ModifiedBy { get; set; } = "AudioPoolAdmin";
+    public string? ModifiedBy { get; set; }
 
     // Foreign Key
     public int AlbumId { get; set; }
