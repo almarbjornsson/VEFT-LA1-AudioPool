@@ -1,4 +1,5 @@
 using AudioPool.Models;
+using Models.Entities;
 
 namespace Models.DTOs;
 public class GenreDto : HyperMediaModel

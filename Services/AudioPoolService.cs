@@ -99,6 +99,11 @@ public class AudioPoolService : IAudioPoolService
         return await _repository.GetAllArtists(pageNumber, pageSize);
     }
 
+    public async Task<IEnumerable<ArtistDto>> GetArtistsByGenre(int genreId)
+    {
+        return await _repository.GetArtistsByGenre(genreId);
+    }
+
     public async Task<ArtistDetailsDto?> GetArtistByIdAsync(int id)
     {
         return await _repository.GetArtistByIdAsync(id);

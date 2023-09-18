@@ -32,6 +32,14 @@ public interface IAudioPoolService
     Task<GenreDetailsDto> CreateGenreAsync(Genre newGenre);
 
     Task<Envelope<ArtistDto>> GetAllArtists(int pageNumber, int pageSize);
+
+    /// <summary>
+    /// Helper for hypermedia links
+    /// </summary>
+    /// <param name="genreId"></param>
+    /// <returns></returns>
+    Task<IEnumerable<ArtistDto>> GetArtistsByGenre(int genreId);
+
     
     Task<ArtistDetailsDto?> GetArtistByIdAsync(int id);
     

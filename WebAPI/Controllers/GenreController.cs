@@ -26,18 +26,27 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetAllGenres()
         {
             var genres = await _audioPoolService.GetAllGenres();
+
             
-            List<GenreDto> genreDtosWithLinks = new List<GenreDto>();
-            
+            var genresWithLinks = new List<GenreDto>();
+            // Add hypermedia links to the genres
             foreach (var genre in genres)
             {
-                // Self
                 genre.Links.AddReference("self", $"/api/genres/{genre.Id}");
-                genreDtosWithLinks.Add(genre);
+        
+                // Get artists by genre and build their links
+                var artists = await _audioPoolService.GetArtistsByGenre(genre.Id);
+                var artistLinks = artists.Select(a => $"/api/artists/{a.Id}").ToList();
+                genre.Links.AddListReference("artists", artistLinks);
+                
+                genresWithLinks.Add(genre);
             }
-            
-            return Ok(genreDtosWithLinks);
+    
+            return Ok(genresWithLinks);
         }
+
+
+
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetGenreById(int id)
