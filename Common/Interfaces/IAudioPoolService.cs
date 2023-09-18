@@ -26,6 +26,8 @@ public interface IAudioPoolService
     Task<SongDetailsDto> CreateSongAsync(Song newSong);
 
     Task<IEnumerable<GenreDto>> GetAllGenres();
+    
+    Task<ICollection<int> > GetGenreIdsByArtistId(int artistId);
 
     Task<GenreDetailsDto?> GetGenreByIdAsync(int id);
     

@@ -31,6 +31,35 @@ namespace WebAPI.Controllers
         {
             var artists = await _audioPoolService.GetAllArtists(pageNumber, pageSize);
 
+            
+            // Add hypermedia links to the artists
+            var itemsWithLinks = new List<ArtistDto>();
+            // For each artist. add link to self, edit, delete, albums, genres
+            foreach(var artist in artists.Items)
+            {
+                // Self
+                artist.Links.AddReference("self", $"/api/artists/{artist.Id}");
+                // edit
+                artist.Links.AddReference("edit", $"/api/artists/{artist.Id}");
+                // delete
+                artist.Links.AddReference("delete", $"/api/artists/{artist.Id}");
+
+                
+                // Get all albums for the artist
+                var albums = await _audioPoolService.GetAlbumsByArtistId(artist.Id);
+                var albumLinks = albums.Select(a => $"/api/albums/{a.Id}").ToList();
+                artist.Links.AddListReference("albums", albumLinks);
+                // Get all genres for the artist
+                var genres = await _audioPoolService.GetGenreIdsByArtistId(artist.Id);
+                var genreLinks = genres.Select(g => $"/api/genres/{g}").ToList();
+                artist.Links.AddListReference("genres", genreLinks);
+                
+                itemsWithLinks.Add(artist);
+            }
+            
+            // Add hypermedia links to the envelope
+            artists.Items = itemsWithLinks;
+            
             return Ok(artists);
         }
 

@@ -80,7 +80,12 @@ public class AudioPoolService : IAudioPoolService
     {
         return await _repository.GetAllGenres();
     }
-    
+
+    public async Task<ICollection<int>> GetGenreIdsByArtistId(int artistId)
+    {
+        return await _repository.GetGenreIdsByArtistId(artistId);
+    }
+
     public async Task<GenreDetailsDto?> GetGenreByIdAsync(int id)
     {
         return await _repository.GetGenreByIdAsync(id);

@@ -238,6 +238,15 @@ public class AudioPoolRepository : IAudioPoolRepository
         return genresDtos;
     }
 
+    public async Task<ICollection<int>> GetGenreIdsByArtistId(int artistId)
+    {
+        return await _context.Artists
+            .Where(a => a.Id == artistId)
+            .SelectMany(a => a.ArtistGenres)
+            .Select(ag => ag.GenresId)
+            .ToListAsync();
+    }
+
     public async Task<IEnumerable<ArtistDto>> GetArtistsByGenre(int genreId)
     {
 var artists = await _context.Genres
