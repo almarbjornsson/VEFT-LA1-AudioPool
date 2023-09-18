@@ -42,7 +42,7 @@ public class AudioPoolRepository : IAudioPoolRepository
         return new GenreDto
         {
             Id = genre.Id,
-            Name = genre.Name
+            Name = genre.Name,
         };
     }
     
@@ -235,6 +235,23 @@ public class AudioPoolRepository : IAudioPoolRepository
         }
         var genresDtos = genres.Select(g => MapGenreToDto(g));
         return genresDtos;
+    }
+
+    public async Task<IEnumerable<ArtistDto>> GetArtistsByGenre(int genreId)
+    {
+var artists = await _context.Genres
+            .Include(g => g.Artists)
+            .ThenInclude(ag => ag.Artist)
+            .Where(g => g.Id == genreId)
+            .SelectMany(g => g.Artists)
+            .Select(ag => ag.Artist)
+            .ToListAsync();
+        if (artists == null)
+        {
+            return Enumerable.Empty<ArtistDto>();
+        }
+        var artistDtos = artists.Select(a => MapArtistToDto(a));
+        return artistDtos;
     }
 
     public async Task<GenreDetailsDto?> GetGenreByIdAsync(int id)
