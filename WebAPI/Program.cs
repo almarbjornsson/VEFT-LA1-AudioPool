@@ -28,7 +28,7 @@ builder.Services.AddScoped<IAudioPoolService, AudioPoolService>();
 var app = builder.Build();
 
 // Add the exception middleware
-// app.UseMiddleware<ExceptionMiddleware>();
+app.UseMiddleware<ExceptionMiddleware>();
 
 
 // Configure the HTTP request pipeline.
