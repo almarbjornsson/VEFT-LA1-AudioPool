@@ -3,6 +3,7 @@ using Models.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AudioPool.Models;
+using Models.InputModels;
 
 namespace Common.Interfaces;
 public interface IAudioPoolRepository
@@ -11,7 +12,7 @@ public interface IAudioPoolRepository
     
     Task DeleteAlbumByIdAsync(int id);
     
-    Task<Album> CreateAlbumAsync(Album album);
+    Task<Album> CreateAlbumAsync(AlbumInputModel album);
     
     Task<IEnumerable<SongDto>> GetSongsByAlbumId(int id);
     

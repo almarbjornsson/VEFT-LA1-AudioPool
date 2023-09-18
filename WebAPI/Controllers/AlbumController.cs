@@ -90,7 +90,7 @@ public class AlbumController : ControllerBase
         return NoContent();
     }
     
-    [BasicTokenAuthorize]
+    //[BasicTokenAuthorize]
     [HttpPost]
     public async Task<IActionResult> CreateAlbum([FromBody] AlbumInputModel album)
     {

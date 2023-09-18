@@ -30,16 +30,20 @@ public class AudioPoolService : IAudioPoolService
 
     public async Task<AlbumDetailsDto> CreateAlbumAsync(AlbumInputModel albumInputModel)
     {
-        // Map the input model to an album
-        var album = albumInputModel.Adapt<Album>();
-        
         
         // Create the album - this should return the album from the database
-        var albumFromDb = await _repository.CreateAlbumAsync(album);
+        var albumFromDb = await _repository.CreateAlbumAsync(albumInputModel);
         
         
         // Map the album from the database to a DTO
-        var albumDto = albumFromDb.Adapt<AlbumDetailsDto>();
+        var albumDto = new AlbumDetailsDto
+        {
+            Name = albumFromDb.Name,
+            ReleaseDate = albumFromDb.ReleaseDate,
+            CoverImageUrl = albumFromDb.CoverImageUrl,
+            Description = albumFromDb.Description,
+            Artists = albumFromDb.AlbumArtists.Select(aa => aa.Artist.Adapt<ArtistDto>()),
+        };
         
         
         return albumDto;

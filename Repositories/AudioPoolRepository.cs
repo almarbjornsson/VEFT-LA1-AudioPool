@@ -172,19 +172,47 @@ public class AudioPoolRepository : IAudioPoolRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<Album> CreateAlbumAsync(Album album)
+    public async Task<Album> CreateAlbumAsync(AlbumInputModel album)
     {
-        await _context.Albums.AddAsync(album);
+        // Map the input model to an Album entity
+        var albumEntity = new Album
+        {
+            Name = album.Name,
+            ReleaseDate = album.ReleaseDate,
+            CoverImageUrl = album.CoverImageUrl,
+            Description = album.Description,
+            DateCreated = DateTime.UtcNow,
+        };
+
+        // If artist IDs are provided, establish relationships immediately
+        if (album.ArtistIds != null)
+        {
+            albumEntity.AlbumArtists = album.ArtistIds.Select(artistId => new AlbumArtist
+            {
+                // EF Core will handle the relationship once the album is saved
+                AlbumsId = albumEntity.Id,
+                ArtistsId = artistId
+            }).ToList();
+        }
+
+        await _context.Albums.AddAsync(albumEntity);
         await _context.SaveChangesAsync();
-        
-        // Sanity check - make sure the album was actually added by fetching it again
-        var albumFromDb = await _context.Albums.FindAsync(album.Id);
+
+        // Fetch the newly created album along with its associated artists
+        var albumFromDb = await _context.Albums
+            .Include(a => a.AlbumArtists)
+            .ThenInclude(aa => aa.Artist)
+            .FirstOrDefaultAsync(a => a.Id == albumEntity.Id);
+
         if (albumFromDb == null)
         {
             throw new Exception("Album was not added to the database");
         }
+
         return albumFromDb;
     }
+
+
 
     public async Task<IEnumerable<SongDto>> GetSongsByAlbumId(int id)
     {
