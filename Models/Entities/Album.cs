@@ -18,7 +18,7 @@ public class Album
     public string Description { get; set; }
 
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public DateTime DateCreated { get; set; }
+    public DateTime DateCreated { get; set; } = DateTime.UtcNow;
     
     [DatabaseGenerated((DatabaseGeneratedOption.Computed))]
     public DateTime? DateModified { get; set; }
